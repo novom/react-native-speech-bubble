@@ -166,11 +166,10 @@ class SpeechBubble extends React.Component {
         style={[
           styles.dialogNext,
           this.props.nextStyle,
-          { transform: [{ translateY: this.state.nextDialogAnimation.y }] },
           { opacity: this.state.typeEnd && !this.state.lastSpeech ? 1 : 0 },
         ]}
       >
-        <Image source={require('./assets/ic_touch_app.png')} />
+        <Image source={require('./assets/ic_touch_app.gif')} />
       </Animated.View>
     ) : null;
   }
