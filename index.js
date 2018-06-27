@@ -15,6 +15,7 @@ import TypeWriter from './TypeWriter';
 const propTypes = {
   allowSkip: PropTypes.bool,
   allowSpeechReplay: PropTypes.bool,
+  millisecondsAfterASpeech: PropTypes.number,
   onSpeechEnd: PropTypes.func,
   onSpeechNext: PropTypes.func,
   onSpeechReplay: PropTypes.func,
@@ -33,6 +34,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  millisecondsAfterASpeech: 10000,
   writingDelay: 100,
 };
 
@@ -79,6 +81,7 @@ class SpeechBubble extends React.Component {
     this.onSpeechBubblePress = this.onSpeechBubblePress.bind(this);
     this.onSpeechBubblePressIn = this.onSpeechBubblePressIn.bind(this);
     this.onSpeechBubblePressOut = this.onSpeechBubblePressOut.bind(this);
+    this.onTypingEnd = this.onTypingEnd.bind(this);
     this.nextSpeechBubbleAnimation = this.nextSpeechBubbleAnimation.bind(this);
     this.replaySpeechBubbleAnimation = this.replaySpeechBubbleAnimation.bind(this);
   }
@@ -93,6 +96,7 @@ class SpeechBubble extends React.Component {
     const { onSpeechNext, onSpeechReplay, speeches } = this.props;
 
     if (allowSkip || typeEnd) {
+      clearTimeout(this.speechEndCountdown);
       if (speechIndex + 1 < speeches.length) {
         const lastSpeech = (speechIndex + 1) + 1 === speeches.length;
 
@@ -218,6 +222,18 @@ class SpeechBubble extends React.Component {
     ) : null;
   }
 
+  onTypingEnd() {
+    if (this.props.onSpeechEnd) {
+      this.props.onSpeechEnd();
+    }
+
+    this.speechEndCountdown = setTimeout(() => {
+      this.onSpeechBubblePress();
+    }, this.props.millisecondsAfterASpeech)
+
+    this.setState({ typeEnd: true });
+  }
+
   render() {
     return (
       <View style={this.props.style}>
@@ -237,12 +253,7 @@ class SpeechBubble extends React.Component {
                 maxDelay={this.props.writingDelay}
                 text={this.props.speeches[this.state.speechIndex]}
                 typing={1}
-                onTypingEnd={() => {
-                  if (this.props.onSpeechEnd) {
-                    this.props.onSpeechEnd();
-                  }
-                  this.setState({ typeEnd: true });
-                }}
+                onTypingEnd={this.onTypingEnd}
                 typeWriterStyle={this.props.typeWriterStyle || styles.typeWriter}
               />
             </View>
