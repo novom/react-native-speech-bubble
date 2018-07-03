@@ -91,10 +91,6 @@ class SpeechBubble extends React.Component {
     this.replaySpeechBubbleAnimation();
   }
 
-  componentWillUnmount() {
-    clearTimeout(this.speechEndCountdown);
-  }
-
   onSpeechBubblePress() {
     const { allowSkip, speechIndex, typeEnd } = this.state;
     const { onSpeechNext, onSpeechReplay, speeches } = this.props;
