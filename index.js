@@ -135,7 +135,7 @@ class SpeechBubble extends React.Component {
           });
         }
 
-        if (!allowSpeechReplay) {
+        if (!allowSpeechReplay && onFinalEnd) {
           onFinalEnd();
         }
       }
