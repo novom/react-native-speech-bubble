@@ -28,7 +28,7 @@ const propTypes = {
   speechBubbleStyle: ViewPropTypes.style,
   speechBubbleTextStyle: ViewPropTypes.style,
   speeches: PropTypes.array.isRequired,
-  speecheTimeMs: PropTypes.number,
+  speechTimeMs: PropTypes.number,
   style: ViewPropTypes.style,
   timerIsActivated: PropTypes.bool,
   typeWriterStyle: Text.propTypes.style,
@@ -37,7 +37,7 @@ const propTypes = {
 
 const defaultProps = {
   allowSpeechReplay: false,
-  speecheTimeMs: 5000,
+  speechTimeMs: 5000,
   timerIsActivated: false,
   writingDelay: 100,
 };
@@ -246,13 +246,13 @@ class SpeechBubble extends React.Component {
   }
 
   startSpeechTimer() {
-    const { speecheTimeMs, timerIsActivated } = this.props;
+    const { speechTimeMs, timerIsActivated } = this.props;
 
     if (timerIsActivated) {
       this.stopSpeechTimer();
       this.speechTimer = setTimeout(() => {
         this.onSpeechBubblePress();
-      }, speecheTimeMs);
+      }, speechTimeMs);
     }
   }
 
